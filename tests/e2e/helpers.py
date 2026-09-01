@@ -4,10 +4,16 @@ Next renderiza las Server Actions con campos ocultos ($ACTION_*) para que el
 formulario funcione sin JavaScript. Reenviarlos es exactamente el camino de
 "progressive enhancement", asi que probar por aca ejercita el servidor real.
 """
-import re, sys
+import os
+import re
+import sys
+
 import requests
 
-BASE = "http://127.0.0.1:3100"
+# El puerto lo fija correr.sh (variable PUERTO), para poder correr la suite
+# aunque 3100 este ocupado. Tenerlo hardcodeado aca rompia esa salida.
+PUERTO = os.environ.get("PUERTO", "3100")
+BASE = os.environ.get("E2E_BASE", f"http://127.0.0.1:{PUERTO}")
 
 def campos_ocultos(html, indice=0):
     """Devuelve los inputs ocultos del formulario `indice` de la pagina."""

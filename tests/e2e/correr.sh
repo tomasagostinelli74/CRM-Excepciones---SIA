@@ -13,7 +13,8 @@ set -euo pipefail
 RAIZ="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$RAIZ"
 
-PUERTO="${PUERTO:-3100}"
+# Se exporta para que helpers.py apunte al mismo puerto.
+export PUERTO="${PUERTO:-3100}"
 PADRON="${PADRON_XLSX:-padron/Alumnos_a_ingresar.xlsx}"
 
 # Un servidor previo en el mismo puerto arruina la corrida en silencio: el
