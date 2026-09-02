@@ -1,0 +1,309 @@
+/*
+ * Login — "liquid glass": fondo con blobs de gradiente en movimiento lento
+ * detras de una tarjeta de vidrio esmerilado. Es un tratamiento visual propio
+ * de esta pantalla (el momento de llegada, antes de entrar al sistema) y no
+ * toca el sistema de diseño del resto de la app: todo vive bajo el prefijo
+ * `liquid-` para no colisionar con las clases de globals.css.
+ *
+ * Paleta: indigo/violeta profundo sobre casi-negro, la misma familia que usa
+ * `--color-acento-*` en globals.css (el acento de toda la app ya es azul),
+ * llevada a una version mas oscura y saturada para esta pantalla puntual.
+ */
+
+.liquid-fondo {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  /* Base mas clara que negro puro: los blobs necesitan un piso sobre el que
+     leerse como color, no como un tinte casi imperceptible. */
+  background: linear-gradient(160deg, #0b0c2e 0%, #07081c 55%, #030309 100%);
+  isolation: isolate;
+}
+
+/* Blobs: radial-gradient grandes, saturados, en capas para dar profundidad.
+   Opacidad y saturacion altas a proposito -es la pieza central del fondo,
+   tiene que leerse como color desde el primer vistazo, como en la referencia. */
+.liquid-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  will-change: transform;
+  mix-blend-mode: screen;
+}
+
+.liquid-blob-1 {
+  top: -18%;
+  left: -14%;
+  width: 68vmax;
+  height: 68vmax;
+  background: radial-gradient(circle at 35% 35%, #8b7bff 0%, #4f3ff0 38%, #2a1f8f 62%, transparent 78%);
+  opacity: 0.85;
+  animation: liquid-drift-1 34s ease-in-out infinite alternate;
+}
+
+.liquid-blob-2 {
+  bottom: -22%;
+  right: -16%;
+  width: 72vmax;
+  height: 72vmax;
+  background: radial-gradient(circle at 60% 60%, #a855f7 0%, #6d28d9 42%, #2e1065 66%, transparent 80%);
+  opacity: 0.8;
+  animation: liquid-drift-2 40s ease-in-out infinite alternate;
+}
+
+.liquid-blob-3 {
+  top: 34%;
+  left: 40%;
+  width: 50vmax;
+  height: 50vmax;
+  background: radial-gradient(circle, #5b7cff 0%, #3346c9 45%, transparent 72%);
+  opacity: 0.55;
+  animation: liquid-drift-3 28s ease-in-out infinite alternate;
+}
+
+@keyframes liquid-drift-1 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(6%, 8%) scale(1.08); }
+}
+@keyframes liquid-drift-2 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-7%, -6%) scale(1.06); }
+}
+@keyframes liquid-drift-3 {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-56%, -44%) rotate(12deg); }
+}
+
+/* Vignette sutil para que el texto y la tarjeta central tengan mas contraste. */
+.liquid-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 42%, transparent 0%, rgba(3, 3, 12, 0.6) 82%);
+  pointer-events: none;
+}
+
+/* --- Contenido --- */
+
+.liquid-contenido {
+  position: relative;
+  z-index: 1;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.liquid-marca {
+  margin-bottom: 1.75rem;
+  text-align: center;
+}
+
+.liquid-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.liquid-titulo {
+  margin-top: 0.375rem;
+  font-size: 1.75rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+.liquid-titulo strong { font-weight: 800; }
+.liquid-titulo span { font-weight: 400; color: rgba(255, 255, 255, 0.82); }
+
+.liquid-subtitulo {
+  margin-top: 0.5rem;
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* --- La tarjeta de vidrio --- */
+
+.liquid-tarjeta {
+  position: relative;
+  width: 100%;
+  max-width: 23rem;
+  border-radius: 1.75rem;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-top-color: rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 24px 70px -20px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  padding: 2rem 1.75rem;
+  animation: liquid-materializar 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Brillo especular: el reflejo de luz sobre el vidrio, como el glare de la
+   referencia. Dos capas: un resplandor amplio y suave, mas una franja mas
+   nitida encima para que se lea como un reflejo real y no solo un tinte. */
+.liquid-tarjeta::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  right: -30%;
+  width: 75%;
+  height: 75%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.15) 45%, transparent 70%);
+  filter: blur(14px);
+  pointer-events: none;
+  opacity: 0.65;
+  transform: rotate(-12deg);
+}
+.liquid-tarjeta::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 8%;
+  width: 38%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.16) 45%,
+    rgba(255, 255, 255, 0.04) 60%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+@keyframes liquid-materializar {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* --- Formulario --- */
+
+.liquid-campo-grupo { position: relative; z-index: 1; }
+
+.liquid-etiqueta {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.78);
+  margin-bottom: 0.4rem;
+}
+
+.liquid-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 0.75rem;
+  padding: 0.7rem 0.875rem;
+  font-size: 0.9375rem;
+  color: #ffffff;
+  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+.liquid-input::placeholder { color: rgba(255, 255, 255, 0.38); }
+.liquid-input:hover { border-color: rgba(255, 255, 255, 0.26); }
+.liquid-input:focus {
+  outline: none;
+  border-color: rgba(147, 141, 255, 0.75);
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow: 0 0 0 4px rgba(109, 91, 255, 0.28);
+}
+.liquid-input[aria-invalid="true"] {
+  border-color: rgba(248, 113, 113, 0.75);
+}
+.liquid-input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.22);
+}
+
+/* Autofill de Chrome fuerza un fondo blanco opaco salvo que se pise con esta
+   trampa del box-shadow interno (no hay otra forma soportada de cambiarlo). */
+.liquid-input:-webkit-autofill,
+.liquid-input:-webkit-autofill:hover,
+.liquid-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ffffff;
+  -webkit-box-shadow: 0 0 0 1000px rgba(30, 27, 60, 0.92) inset;
+  caret-color: #ffffff;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+.liquid-boton {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #6d5bff 0%, #7c3aed 100%);
+  box-shadow: 0 10px 28px -8px rgba(109, 91, 255, 0.65);
+  cursor: pointer;
+  transition: transform 100ms ease-out, box-shadow 150ms ease, filter 150ms ease;
+}
+.liquid-boton:hover:not(:disabled) { filter: brightness(1.08); }
+.liquid-boton:active:not(:disabled) { transform: scale(0.97); }
+.liquid-boton:disabled { opacity: 0.6; cursor: not-allowed; }
+.liquid-boton:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.liquid-error {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 0.625rem;
+  align-items: flex-start;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  background: rgba(248, 113, 113, 0.12);
+  color: #fecaca;
+  padding: 0.7rem 0.875rem;
+  font-size: 0.875rem;
+}
+
+.liquid-pie {
+  position: relative;
+  z-index: 1;
+  margin-top: 1.75rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* --- Accesibilidad: menos movimiento, menos transparencia, mas contraste --- */
+
+@media (prefers-reduced-motion: reduce) {
+  .liquid-blob { animation: none; }
+  .liquid-tarjeta { animation: liquid-materializar-simple 200ms ease both; }
+}
+@keyframes liquid-materializar-simple {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .liquid-tarjeta {
+    background: #14122b;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+  .liquid-tarjeta::before { display: none; }
+  .liquid-input { background: rgba(255, 255, 255, 0.1); }
+}
+
+@media (prefers-contrast: more) {
+  .liquid-tarjeta { border-width: 2px; border-color: #ffffff; }
+  .liquid-input { border-width: 2px; border-color: rgba(255, 255, 255, 0.6); }
+  .liquid-subtitulo, .liquid-etiqueta { color: rgba(255, 255, 255, 0.92); }
+}
