@@ -54,7 +54,7 @@ export async function buscarAlumnoPorLegajo(legajo: string): Promise<ResultadoBu
     if (!alumno) {
       return {
         encontrado: false,
-        mensaje: `El legajo ${parseo.data} no existe en el padron de alumnos inscriptos.`,
+        mensaje: `El legajo ${parseo.data} no existe en el padrón de alumnos inscriptos.`,
       };
     }
 

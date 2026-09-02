@@ -73,7 +73,7 @@ export default async function PaginaAdmin() {
                         aria-valuenow={porcentaje}
                         aria-valuemin={0}
                         aria-valuemax={100}
-                        aria-label={`Ocupacion del ${formatearFecha(fecha.fecha)}`}
+                        aria-label={`Ocupación del ${formatearFecha(fecha.fecha)}`}
                       >
                         <div
                           className="h-full rounded-full"
@@ -92,16 +92,16 @@ export default async function PaginaAdmin() {
           )}
         </Panel>
 
-        <Panel titulo="Accesos rapidos">
+        <Panel titulo="Accesos rápidos">
           <div className="grid gap-2 sm:grid-cols-2">
             <Link href="/admin/motivos" className="boton boton-secundario justify-start">
-              Motivos de excepcion
+              Motivos de excepción
             </Link>
             <Link href="/admin/fechas" className="boton boton-secundario justify-start">
               Fechas de recuperatorio
             </Link>
             <Link href="/admin/alumnos" className="boton boton-secundario justify-start">
-              Padron de alumnos
+              Padrón de alumnos
             </Link>
             <Link href="/admin/usuarios" className="boton boton-secundario justify-start">
               Usuarios
