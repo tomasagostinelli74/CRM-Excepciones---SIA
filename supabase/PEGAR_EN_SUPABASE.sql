@@ -1,4 +1,20 @@
 -- ===========================================================================
+-- PEGAR ESTE ARCHIVO ENTERO EN EL SQL EDITOR DE SUPABASE Y APRETAR "RUN".
+--
+-- Es la union de los archivos de supabase/migrations/, en el orden en que
+-- tienen que aplicarse. Se genera con este mismo script (ver el comentario
+-- al final); si alguna vez se agrega una migracion nueva a esa carpeta,
+-- hay que volver a generarlo.
+--
+-- Es seguro correrlo mas de una vez: todo esta escrito para no romper nada
+-- si ya se habia corrido antes.
+-- ===========================================================================
+
+-- ---------------------------------------------------------------------------
+-- Origen: supabase/migrations/20260101000000_esquema_inicial.sql
+-- ---------------------------------------------------------------------------
+
+-- ===========================================================================
 -- Sistema de fichas de excepcion a examen de ingreso
 -- Esquema para Supabase (Postgres): tablas, triggers de negocio y RLS.
 --
@@ -220,3 +236,72 @@ alter table public.motivos_excepcion    enable row level security;
 alter table public.fechas_recuperatorio enable row level security;
 alter table public.fichas_excepcion     enable row level security;
 alter table public.auditoria            enable row level security;
+
+-- ---------------------------------------------------------------------------
+-- Origen: supabase/migrations/20260101000100_seed_configuracion.sql
+-- ---------------------------------------------------------------------------
+
+-- ===========================================================================
+-- Datos iniciales: usuarios, motivos y fechas de ejemplo.
+--
+-- Se puede pegar y correr junto con el archivo anterior, o por separado
+-- despues. Es idempotente: correrlo de nuevo no duplica nada.
+--
+-- NO incluye el padron de alumnos: son datos personales y se cargan aparte,
+-- desde el panel de administracion (/admin/alumnos) una vez que el sistema
+-- esta publicado.
+-- ===========================================================================
+
+-- --- Usuarios iniciales -----------------------------------------------------
+-- Contrasenas ya hasheadas con scrypt (nunca se guarda texto plano). Son
+-- credenciales de arranque: cambialas desde /admin/usuarios apenas entres.
+--   Aromero    / LordAlan  (administrador)
+--   Mfernandez / SIA2026   (operador)
+insert into public.usuarios (usuario, nombre, rol, password_hash, activo) values
+  ('Aromero', 'A. Romero', 'admin',
+   'scrypt$16384$8$1$c7d46fb7743719eabf0b10cf9a646ac0$4bbcbe96e2be2105453cbaf63587758afeb778abe3195e7fe0aefec7c4ec22a5c482942657463f0d6ff34d6a265ae3a60a1f40a2c3df2c6f0ba4fbb9dc5e8d89',
+   true),
+  ('Mfernandez', 'M. Fernandez', 'operador',
+   'scrypt$16384$8$1$69d7c6398d4c0cc4311a7fe117a7cc13$f4b95b11c0e53ca2d02d8be44b250b758abba4722154b337d465f6719864d2177a10221db5fdd1b7795435b9f4f8a1922aad9625888044d799616ec930fefbcb',
+   true)
+on conflict (lower(usuario)) do nothing;
+
+-- --- Motivos de excepcion ----------------------------------------------------
+insert into public.motivos_excepcion (descripcion, orden, activo) values
+  ('Certificado medico',                        10, true),
+  ('Superposicion con examen de otra carrera',  20, true),
+  ('Motivo laboral certificado',                30, true),
+  ('Fallecimiento de familiar directo',         40, true),
+  ('Residencia fuera de la ciudad',             50, true),
+  ('Otro (detallar en observaciones)',          90, true)
+on conflict (lower(descripcion)) do nothing;
+
+-- --- Fechas de recuperatorio de ejemplo -------------------------------------
+insert into public.fechas_recuperatorio (fecha, cupo, activo) values
+  (current_date + interval '14 days', 60,   true),
+  (current_date + interval '28 days', 60,   true),
+  (current_date + interval '45 days', null, true)
+on conflict (fecha) do nothing;
+
+-- ---------------------------------------------------------------------------
+-- Origen: supabase/migrations/20260101000200_storage_adjuntos.sql
+-- ---------------------------------------------------------------------------
+
+-- ===========================================================================
+-- Storage: bucket PRIVADO para los comprobantes PDF.
+--
+-- `public = false` es lo que hace que no exista una URL publica al PDF: el
+-- unico acceso es a traves del servidor de la aplicacion (que usa la
+-- service role key, igual que con las tablas). No se agregan politicas de
+-- storage.objects por el mismo motivo que en las tablas: nadie mas que el
+-- servidor toca este bucket.
+-- ===========================================================================
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('adjuntos-fichas', 'adjuntos-fichas', false, 10485760, array['application/pdf'])
+on conflict (id) do update
+  set public = excluded.public,
+      file_size_limit = excluded.file_size_limit,
+      allowed_mime_types = excluded.allowed_mime_types;
+
+alter table storage.objects enable row level security;
+

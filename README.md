@@ -11,15 +11,18 @@ PDF adjunto y trazabilidad de quién cargó qué.
 
 | | |
 |---|---|
-| **Persistencia** | SQLite local, detrás de una capa de datos intercambiable |
-| **Adjuntos** | Disco del servidor (fuera de `/public`), detrás de una capa de storage |
-| **Supabase** | **En stand by** — esquema, RLS y bucket ya escritos en `supabase/migrations/`; procedimiento de activación en [`docs/supabase.md`](docs/supabase.md) |
-| **Autenticación** | Propia: scrypt + cookie firmada (HMAC-SHA256), roles `admin` / `operador` |
+| **Persistencia** | SQLite local (por defecto) **o** Postgres de un proyecto Supabase, detrás de una capa de datos intercambiable |
+| **Adjuntos** | Disco del servidor **o** Supabase Storage (bucket privado), detrás de una capa de storage |
+| **Publicar con un link** | **¿No sos técnico?** → seguí [`docs/supabase.md`](docs/supabase.md): guía paso a paso, sin terminal, para publicar el sistema en un link real (Supabase + Vercel, ambos gratis para empezar) |
+| **Autenticación** | Propia: scrypt + cookie firmada (HMAC-SHA256), roles `admin` / `operador` — igual en los dos adaptadores |
 
-El diseño está hecho para que pasar a Supabase sea **escribir un adaptador, no
-reescribir la aplicación**: ninguna pantalla ni Server Action conoce SQLite.
-Todas hablan con la interfaz `Repositorio` (`src/lib/data/repository.ts`) y con
-`Storage` (`src/lib/storage/index.ts`).
+Toda la aplicación habla con la interfaz `Repositorio`
+(`src/lib/data/repository.ts`) y con `Storage` (`src/lib/storage/index.ts`);
+ninguna pantalla ni Server Action conoce qué motor hay detrás. Cambiar de uno a
+otro es una variable de entorno (`DATA_ADAPTER` / `STORAGE_ADAPTER`), no una
+reescritura. El adaptador de Supabase se conecta directo a la base Postgres
+del proyecto (con transacciones reales), no a través de la API REST —
+`src/lib/data/postgres/`, ver el porqué en el pie de `docs/supabase.md`.
 
 ---
 
@@ -127,8 +130,10 @@ completa el formulario es rechazado al enviar, con un mensaje claro.
 `Content-Type`: ambos los elige el cliente, los primeros bytes (`%PDF-`) no.
 
 **Los adjuntos nunca son públicos.** Viven fuera de `/public` y el único acceso
-es `/api/fichas/[id]/archivo`, que exige sesión. Es la misma forma que tendrá
-con Supabase Storage: bucket privado y *signed URLs* de vida corta.
+es `/api/fichas/[id]/archivo`, que exige sesión — igual con el adaptador local
+que con Supabase Storage (bucket privado, sin URL pública). El servidor baja el
+PDF con su clave secreta y lo transmite por esa misma ruta autenticada; el
+navegador nunca recibe un link directo al archivo.
 
 **Ocultar botones no es seguridad.** La navegación filtra por rol solo para no
 mostrar links inútiles; cada página de `/admin` revalida el rol en el servidor y
@@ -204,12 +209,19 @@ Todas en `.env.example`. Las que importan:
 | Variable | Por defecto | Para qué |
 |---|---|---|
 | `SESSION_SECRET` | — | Firma de la cookie de sesión. **Obligatoria en producción** (mín. 32 caracteres) |
-| `DATA_ADAPTER` | `sqlite` | `sqlite` o `supabase` (este último, pendiente) |
-| `SQLITE_PATH` | `./data/crm-excepciones.db` | Archivo de la base |
-| `STORAGE_ADAPTER` | `local` | `local` o `supabase` (pendiente) |
-| `STORAGE_PATH` | `./storage/adjuntos` | Dónde se guardan los PDF |
+| `DATA_ADAPTER` | `sqlite` | `sqlite` o `supabase` |
+| `SQLITE_PATH` | `./data/crm-excepciones.db` | Archivo de la base (solo con `DATA_ADAPTER=sqlite`) |
+| `STORAGE_ADAPTER` | `local` | `local` o `supabase` |
+| `STORAGE_PATH` | `./storage/adjuntos` | Dónde se guardan los PDF (solo con `STORAGE_ADAPTER=local`) |
 | `MAX_PDF_MB` | `10` | Tamaño máximo del adjunto |
 | `TZ` | `America/Argentina/Buenos_Aires` | Zona horaria de fechas y horarios |
+| `SUPABASE_DB_URL` | — | Cadena de conexión Postgres del proyecto (solo con `DATA_ADAPTER=supabase`) |
+| `SUPABASE_URL` | — | URL del proyecto (solo con `STORAGE_ADAPTER=supabase`) |
+| `SUPABASE_SERVICE_ROLE_KEY` | — | Clave secreta del servidor (solo con `STORAGE_ADAPTER=supabase`). **Nunca en el navegador** |
+| `SUPABASE_STORAGE_BUCKET` | `adjuntos-fichas` | Nombre del bucket (solo con `STORAGE_ADAPTER=supabase`) |
+
+Guía completa de estas tres últimas, sin dar nada por sabido, en
+[`docs/supabase.md`](docs/supabase.md).
 
 ---
 
@@ -239,21 +251,31 @@ SESSION_SECRET=... npm run start
 Poné un reverse proxy con TLS (nginx, Caddy) delante, y hacé backup de
 `data/` y `storage/`: ahí están la base y todos los comprobantes.
 
-### Vercel
+### Vercel + Supabase (link público, recomendado)
 
 Vercel corre sobre un filesystem **efímero y de solo lectura**, así que
 `DATA_ADAPTER=sqlite` y `STORAGE_ADAPTER=local` **no sirven ahí**: la base y los
-PDF se perderían en cada despliegue. Desplegar en Vercel requiere primero
-activar Supabase siguiendo [`docs/supabase.md`](docs/supabase.md).
+PDF se perderían en cada despliegue. Para Vercel hace falta el adaptador de
+Supabase (`DATA_ADAPTER=supabase`, `STORAGE_ADAPTER=supabase`).
 
-Una vez hecho eso:
+**Si no sos técnico**, [`docs/supabase.md`](docs/supabase.md) es una guía sin
+terminal, paso a paso con capturas de dónde hacer clic, para las dos cuentas
+gratuitas y las variables de entorno.
 
-1. Importar el repositorio en Vercel (detecta Next.js solo).
-2. Cargar en **Settings → Environment Variables**: `SESSION_SECRET`,
-   `DATA_ADAPTER=supabase`, `STORAGE_ADAPTER=supabase`,
-   `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
-   `SUPABASE_SERVICE_ROLE_KEY`, `MAX_PDF_MB`, `TZ`.
-3. Desplegar. Vercel ya sirve por HTTPS, así que la cookie `Secure` funciona.
+Versión corta para quien ya sabe manejarse:
+
+1. Crear un proyecto en [supabase.com](https://supabase.com).
+2. Pegar `supabase/PEGAR_EN_SUPABASE.sql` entero en el **SQL Editor** del
+   proyecto y correrlo — crea las tablas, carga los datos iniciales y el
+   bucket privado de Storage, todo en un solo paso.
+3. Copiar de **Project Settings**: la cadena de conexión Postgres
+   (**Database → Connection string → URI**, con el password real) y las dos
+   claves de **API** (`Project URL` y `service_role`).
+4. Importar el repositorio en Vercel (detecta Next.js solo) y cargar en
+   **Settings → Environment Variables**: `SESSION_SECRET`,
+   `DATA_ADAPTER=supabase`, `STORAGE_ADAPTER=supabase`, `SUPABASE_DB_URL`,
+   `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `MAX_PDF_MB`, `TZ`.
+5. Deploy. Vercel ya sirve por HTTPS, así que la cookie `Secure` funciona.
 
 > Los adjuntos viajan por Server Actions. El límite está en `next.config.ts`
 > (`bodySizeLimit`) y el real lo impone `MAX_PDF_MB`, validado en el servidor.
@@ -278,17 +300,19 @@ src/
     domain/                   entidades y errores del dominio
     data/
       repository.ts           ← el contrato: la única superficie de datos
-      sqlite/                 adaptador actual
-      supabase/               adaptador pendiente (documentado)
-    storage/                  interfaz + adaptador local + validación de PDF
+      sqlite/                 adaptador SQLite
+      postgres/                adaptador Postgres (usado por Supabase)
+      supabase/                re-exporta el adaptador postgres con ese nombre
+    storage/                  interfaz + adaptador local + adaptador Supabase Storage
     auth/                     scrypt, sesión firmada, guards por rol
     import/                   parser del Excel del padrón
     validacion/               esquemas Zod compartidos
     utils/                    texto y fechas
-scripts/                      migrate, seed, reset, import
-supabase/migrations/          esquema Postgres + RLS + bucket (preparado)
-tests/e2e/                    suite end-to-end
-docs/supabase.md              cómo activar Supabase
+scripts/                      migrate, seed, reset, import (SQLite)
+supabase/migrations/          esquema Postgres + RLS + bucket, en 3 archivos
+supabase/PEGAR_EN_SUPABASE.sql  los 3 anteriores, unidos, para un solo copiar-y-pegar
+tests/e2e/                    suite end-to-end (corre igual contra SQLite o Postgres)
+docs/supabase.md              guía sin terminal para publicar con Supabase + Vercel
 ```
 
 ---

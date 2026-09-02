@@ -36,6 +36,7 @@ export interface Storage {
 }
 
 import { LocalStorage } from "./local";
+import { SupabaseStorage } from "./supabase";
 
 export type AdaptadorStorage = "local" | "supabase";
 
@@ -51,10 +52,8 @@ export function obtenerStorage(): Storage {
       cache.__crmStorage = new LocalStorage();
       break;
     case "supabase":
-      throw new Error(
-        "El storage de Supabase todavia no esta implementado (ver src/lib/data/supabase/index.ts). " +
-          "Mientras tanto usa STORAGE_ADAPTER=local.",
-      );
+      cache.__crmStorage = new SupabaseStorage();
+      break;
     default:
       throw new Error(`STORAGE_ADAPTER desconocido: "${adaptador}". Valores validos: local, supabase.`);
   }

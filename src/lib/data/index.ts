@@ -1,6 +1,7 @@
 import "server-only";
 
 import type { Repositorio } from "./repository";
+import { SupabaseRepositorio } from "./supabase";
 import { SqliteRepositorio } from "./sqlite";
 
 /**
@@ -25,11 +26,8 @@ export function obtenerRepositorio(): Repositorio {
       cache.__crmRepo = new SqliteRepositorio();
       break;
     case "supabase":
-      throw new Error(
-        "El adaptador Supabase todavia no esta implementado. " +
-          "Ver src/lib/data/supabase/index.ts y docs/supabase.md. " +
-          "Mientras tanto usa DATA_ADAPTER=sqlite.",
-      );
+      cache.__crmRepo = new SupabaseRepositorio();
+      break;
     default:
       throw new Error(`DATA_ADAPTER desconocido: "${adaptador}". Valores validos: sqlite, supabase.`);
   }
