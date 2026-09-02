@@ -191,7 +191,7 @@ export function Paginador({
     <nav
       className="flex flex-wrap items-center justify-between gap-3 border-t px-4 py-3"
       style={{ borderColor: "var(--borde)" }}
-      aria-label="Paginacion"
+      aria-label="Paginación"
     >
       <p className="text-sm tabular-nums" style={{ color: "var(--texto-suave)" }}>
         {desde}–{hasta} de {total}

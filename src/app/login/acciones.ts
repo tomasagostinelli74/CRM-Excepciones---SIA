@@ -27,7 +27,7 @@ export async function iniciarSesion(
   });
 
   if (!parseo.success) {
-    return { error: "Completa el usuario y la contrasena." };
+    return { error: "Completa el usuario y la contraseña." };
   }
 
   const repo = obtenerRepositorio();
@@ -41,10 +41,10 @@ export async function iniciarSesion(
   const coincide = await verificarPassword(parseo.data.password, hash);
 
   if (!usuario || !coincide) {
-    return { error: "Usuario o contrasena incorrectos." };
+    return { error: "Usuario o contraseña incorrectos." };
   }
   if (!usuario.activo) {
-    return { error: "Tu usuario esta desactivado. Comunicate con el administrador." };
+    return { error: "Tu usuario está desactivado. Comunicate con el administrador." };
   }
 
   await crearSesion({ usuarioId: usuario.id, usuario: usuario.usuario, rol: usuario.rol });

@@ -18,7 +18,7 @@ def subir(s, extra_archivo):
 # --- Archivo que no es xlsx ---
 r = subir(admin, ("padron.xlsx", b"esto no es un excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
 check("archivo corrupto es rechazado con mensaje claro",
-      "no se pudo leer" in r.text.lower() or "valido" in r.text.lower(), r.text[:200])
+      "no se pudo leer" in r.text.lower() or "válido" in r.text.lower(), r.text[:200])
 
 r = subir(admin, ("padron.csv", b"legajo,alumno\n1,x", "text/csv"))
 check("extension distinta de .xlsx es rechazada", "Excel (.xlsx)" in r.text or "xlsx" in r.text.lower())
@@ -50,10 +50,10 @@ ws.append([9911111, "Prueba Uno Repetido, Alumno"]) # duplicada en archivo
 wb.save(buf)
 r = subir(admin, ("mixto.xlsx", buf.getvalue(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
 check("la vista previa reporta filas rechazadas", "Rechazadas" in r.text or "rechazad" in r.text.lower())
-check("la vista previa detecta el legajo no numerico", "no son numeros" in r.text or "numeros" in r.text)
+check("la vista previa detecta el legajo no numerico", "no son números" in r.text or "números" in r.text)
 check("la vista previa detecta el legajo repetido", "9911111" in r.text)
 check("la vista previa NO escribe todavia en la base",
-      "todavia no se escribio" in r.text.lower() or "9911115" not in admin.get(f"{BASE}/admin/alumnos?q=9911115").text)
+      "todavía no se escribió" in r.text.lower() or "9911115" not in admin.get(f"{BASE}/admin/alumnos?q=9911115").text)
 
 # --- Import real del padron completo ---
 antes = admin.get(f"{BASE}/admin/alumnos").text
@@ -78,7 +78,7 @@ datos["archivo"] = ("Alumnos_a_ingresar.xlsx", contenido,
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 r2 = admin.post(f"{BASE}/admin/alumnos", files=datos, allow_redirects=False)
 check("el import confirmado responde OK", r2.status_code == 200, str(r2.status_code))
-check("el import informa el resultado", "actualizado" in r2.text.lower() or "Padron actualizado" in r2.text)
+check("el import informa el resultado", "actualizado" in r2.text.lower() or "Padrón actualizado" in r2.text)
 
 # --- Verificacion contra la base ---
 r = admin.get(f"{BASE}/admin/alumnos?q=1251054")

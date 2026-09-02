@@ -50,7 +50,7 @@ login(oper, "Mfernandez", "SIA2026")
 check("login operador funciona", "crm_sesion" in oper.cookies)
 
 r = oper.get(f"{BASE}/fichas")
-check("operador entra al listado de fichas", r.status_code == 200 and "Fichas de excepcion" in r.text)
+check("operador entra al listado de fichas", r.status_code == 200 and "Fichas de excepción" in r.text)
 
 r = oper.get(f"{BASE}/admin", allow_redirects=False)
 check("operador NO puede entrar a /admin (redirige)",

@@ -4,11 +4,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Fichas de excepcion — Examen de Ingreso",
-    template: "%s — Fichas de excepcion",
+    default: "Fichas de excepción — Examen de Ingreso",
+    template: "%s — Fichas de excepción",
   },
   description:
-    "Registro de fichas de excepcion a la fecha de curso asignada del Examen de Ingreso.",
+    "Registro de fichas de excepción a la fecha de curso asignada del Examen de Ingreso.",
   robots: { index: false, follow: false },
 };
 

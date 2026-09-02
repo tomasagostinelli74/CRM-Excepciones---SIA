@@ -20,8 +20,8 @@ export default async function PaginaNuevaFicha() {
   return (
     <>
       <EncabezadoPagina
-        titulo="Nueva ficha de excepcion"
-        descripcion="Registra un alumno que no podra asistir a la fecha de curso asignada."
+        titulo="Nueva ficha de excepción"
+        descripcion="Registra un alumno que no podrá asistir a la fecha de curso asignada."
       />
       <FormularioNuevaFicha motivos={motivos} fechas={fechas} maxMb={tamanoMaximoMb()} />
     </>

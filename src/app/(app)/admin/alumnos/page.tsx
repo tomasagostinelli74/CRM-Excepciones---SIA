@@ -5,7 +5,7 @@ import { obtenerRepositorio } from "@/lib/data";
 import { formatearInstante } from "@/lib/utils/fechas";
 import { ImportadorPadron } from "./importador";
 
-export const metadata = { title: "Padron de alumnos" };
+export const metadata = { title: "Padrón de alumnos" };
 
 const POR_PAGINA = 20;
 
@@ -64,11 +64,11 @@ export default async function PaginaAlumnos({
 
           {listado.items.length === 0 ? (
             <Vacio
-              titulo={q ? "Ningun alumno coincide con la busqueda" : "El padron esta vacio"}
+              titulo={q ? "Ningún alumno coincide con la búsqueda" : "El padrón está vacío"}
               descripcion={
                 q
-                  ? "Proba con otro legajo o apellido."
-                  : "Importa el Excel del sistema academico para habilitar la validacion de legajos."
+                  ? "Probá con otro legajo o apellido."
+                  : "Importá el Excel del sistema académico para habilitar la validación de legajos."
               }
             />
           ) : (

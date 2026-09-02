@@ -60,7 +60,7 @@ export function Navegacion({
             EI
           </span>
           <span className="hidden min-w-0 sm:block">
-            <span className="block truncate text-sm font-bold leading-tight">Fichas de excepcion</span>
+            <span className="block truncate text-sm font-bold leading-tight">Fichas de excepción</span>
             <span className="block text-xs leading-tight" style={{ color: "var(--texto-tenue)" }}>
               Examen de Ingreso
             </span>

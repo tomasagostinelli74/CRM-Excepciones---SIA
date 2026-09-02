@@ -143,7 +143,7 @@ export function FormularioEdicion({
             className="campo file:mr-3 file:rounded-md file:border-0 file:bg-[var(--superficie-2)] file:px-3 file:py-1.5 file:text-sm file:font-semibold"
           />
           <p className="ayuda mt-1.5">
-            Si no elegis un archivo, se conserva <strong>{ficha.archivoNombre}</strong>.
+            Si no elegís un archivo, se conserva <strong>{ficha.archivoNombre}</strong>.
           </p>
           {estado.errores?.archivo ? <p className="error-campo">{estado.errores.archivo}</p> : null}
         </div>
@@ -179,14 +179,14 @@ export function FormularioAnulacion({ fichaId, numero }: { fichaId: string; nume
 
         <Aviso tipo="info">
           La ficha no se borra: queda registrada como anulada, con el motivo, quien la anulo y
-          cuando. El adjunto tambien se conserva.
+          cuando. El adjunto también se conserva.
         </Aviso>
 
         {estado.error ? <Aviso tipo="error">{estado.error}</Aviso> : null}
 
         <div>
           <label className="etiqueta" htmlFor="a-motivo">
-            Motivo de la anulacion
+            Motivo de la anulación
           </label>
           <textarea
             id="a-motivo"
@@ -196,14 +196,14 @@ export function FormularioAnulacion({ fichaId, numero }: { fichaId: string; nume
             maxLength={500}
             required
             autoFocus
-            placeholder="Ej.: cargada por error, el alumno presento la documentacion fuera de termino…"
+            placeholder="Ej.: cargada por error, el alumno presentó la documentación fuera de término…"
             aria-invalid={Boolean(estado.errores?.motivo)}
           />
           {estado.errores?.motivo ? <p className="error-campo">{estado.errores.motivo}</p> : null}
         </div>
 
         <div className="flex gap-2">
-          <BotonEnviar texto="Confirmar anulacion" cargando="Anulando…" clase="boton-peligro" />
+          <BotonEnviar texto="Confirmar anulación" cargando="Anulando…" clase="boton-peligro" />
           <button type="button" className="boton boton-secundario" onClick={() => setAbierto(false)}>
             Cancelar
           </button>

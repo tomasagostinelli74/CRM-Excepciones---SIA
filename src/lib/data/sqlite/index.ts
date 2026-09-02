@@ -271,7 +271,7 @@ export class SqliteRepositorio implements Repositorio {
         )
         .run({ ...motivo, activo: aInt(motivo.activo) });
     } catch (error) {
-      throw this.traducirUnicidad(error, "descripcion", "Ya existe un motivo con esa descripcion.");
+      throw this.traducirUnicidad(error, "descripcion", "Ya existe un motivo con esa descripción.");
     }
     return motivo;
   }
@@ -289,7 +289,7 @@ export class SqliteRepositorio implements Repositorio {
         )
         .run({ id, descripcion: datos.descripcion, activo: aInt(datos.activo), orden: datos.orden });
     } catch (error) {
-      throw this.traducirUnicidad(error, "descripcion", "Ya existe un motivo con esa descripcion.");
+      throw this.traducirUnicidad(error, "descripcion", "Ya existe un motivo con esa descripción.");
     }
     return { ...existente, ...datos };
   }
@@ -599,7 +599,7 @@ export class SqliteRepositorio implements Repositorio {
       if (!fila) throw new ErrorNoEncontrado("La ficha que intentas editar no existe.");
       const actual = mapearFicha(fila);
       if (actual.estado === "anulada") {
-        throw new ErrorConflicto("La ficha esta anulada y ya no se puede editar.");
+        throw new ErrorConflicto("La ficha está anulada y ya no se puede editar.");
       }
 
       this.validarReferenciasFicha(actual.legajo, cambios.motivoId, cambios.fechaRecuperatorioId);
@@ -781,14 +781,14 @@ export class SqliteRepositorio implements Repositorio {
    */
   private validarReferenciasFicha(legajo: string, motivoId: string, fechaId: string): void {
     const alumno = this.db.prepare("SELECT 1 FROM alumnos WHERE legajo = ?").get(legajo);
-    if (!alumno) throw new ErrorValidacion("El legajo ingresado no existe en el padron de alumnos.", "legajo");
+    if (!alumno) throw new ErrorValidacion("El legajo ingresado no existe en el padrón de alumnos.", "legajo");
 
     const motivo = this.db
       .prepare<[string], FilaMotivo>("SELECT * FROM motivos_excepcion WHERE id = ?")
       .get(motivoId);
     if (!motivo) throw new ErrorValidacion("El motivo seleccionado no existe.", "motivoId");
     if (motivo.activo !== 1) {
-      throw new ErrorValidacion("El motivo seleccionado ya no esta disponible.", "motivoId");
+      throw new ErrorValidacion("El motivo seleccionado ya no está disponible.", "motivoId");
     }
 
     const fecha = this.db
@@ -796,7 +796,7 @@ export class SqliteRepositorio implements Repositorio {
       .get(fechaId);
     if (!fecha) throw new ErrorValidacion("La fecha de recuperatorio seleccionada no existe.", "fechaRecuperatorioId");
     if (fecha.activo !== 1) {
-      throw new ErrorValidacion("La fecha de recuperatorio seleccionada ya no esta disponible.", "fechaRecuperatorioId");
+      throw new ErrorValidacion("La fecha de recuperatorio seleccionada ya no está disponible.", "fechaRecuperatorioId");
     }
   }
 
@@ -817,7 +817,7 @@ export class SqliteRepositorio implements Repositorio {
 
     if (ocupadas.n >= fecha.cupo) {
       throw new ErrorConflicto(
-        `La fecha seleccionada ya cubrio su cupo de ${fecha.cupo} alumno(s). Elegi otra fecha.`,
+        `La fecha seleccionada ya cubrió su cupo de ${fecha.cupo} alumno(s). Elegí otra fecha.`,
         "fechaRecuperatorioId",
       );
     }

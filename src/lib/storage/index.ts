@@ -55,7 +55,7 @@ export function obtenerStorage(): Storage {
       cache.__crmStorage = new SupabaseStorage();
       break;
     default:
-      throw new Error(`STORAGE_ADAPTER desconocido: "${adaptador}". Valores validos: local, supabase.`);
+      throw new Error(`STORAGE_ADAPTER desconocido: "${adaptador}". Valores válidos: local, supabase.`);
   }
 
   return cache.__crmStorage;

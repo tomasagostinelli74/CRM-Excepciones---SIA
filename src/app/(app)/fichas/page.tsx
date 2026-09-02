@@ -46,7 +46,7 @@ export default async function PaginaFichas({
   return (
     <>
       <EncabezadoPagina
-        titulo="Fichas de excepcion"
+        titulo="Fichas de excepción"
         descripcion={`${resultado.total} ficha(s) con los filtros actuales.`}
         acciones={
           <Link href="/fichas/nueva" className="boton boton-primario">
@@ -73,7 +73,7 @@ export default async function PaginaFichas({
         {resultado.items.length === 0 ? (
           <Vacio
             titulo="No hay fichas para mostrar"
-            descripcion="Proba ajustando los filtros, o carga la primera ficha de excepcion."
+            descripcion="Probá ajustando los filtros, o carga la primera ficha de excepción."
             accion={
               <Link href="/fichas/nueva" className="boton boton-primario">
                 Nueva ficha

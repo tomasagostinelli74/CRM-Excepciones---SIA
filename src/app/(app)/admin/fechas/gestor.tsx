@@ -144,7 +144,7 @@ export function GestorFechas({ fechas }: { fechas: FechaRecuperatorio[] }) {
       <Panel sinPadding>
         {fechas.length === 0 ? (
           <Vacio
-            titulo="Todavia no hay fechas cargadas"
+            titulo="Todavía no hay fechas cargadas"
             descripcion="Sin al menos una fecha activa y futura, el operador no puede generar fichas."
           />
         ) : (

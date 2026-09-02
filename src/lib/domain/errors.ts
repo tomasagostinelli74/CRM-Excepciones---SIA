@@ -42,14 +42,14 @@ export class ErrorConflicto extends ErrorDominio {
 }
 
 export class ErrorAutenticacion extends ErrorDominio {
-  constructor(mensaje = "Debes iniciar sesion para continuar.") {
+  constructor(mensaje = "Debes iniciar sesión para continuar.") {
     super("NO_AUTENTICADO", mensaje);
     this.name = "ErrorAutenticacion";
   }
 }
 
 export class ErrorAutorizacion extends ErrorDominio {
-  constructor(mensaje = "No tenes permisos para realizar esta accion.") {
+  constructor(mensaje = "No tenés permisos para realizar esta acción.") {
     super("NO_AUTORIZADO", mensaje);
     this.name = "ErrorAutorizacion";
   }

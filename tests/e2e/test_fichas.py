@@ -34,16 +34,16 @@ def crear_ficha(s, legajo, motivo=None, fecha=None, pdf=None, obs="Prueba automa
 # --- Legajo inexistente ---
 r = crear_ficha(oper, "0000000")
 check("legajo inexistente es rechazado por el SERVIDOR",
-      "no existe en el padron" in r.text, f"status {r.status_code}")
+      "no existe en el padrón" in r.text, f"status {r.status_code}")
 
 # --- Legajo no numerico ---
 r = crear_ficha(oper, "abc123")
-check("legajo no numerico es rechazado", "solo numeros" in r.text.lower() or "no existe" in r.text)
+check("legajo no numerico es rechazado", "solo números" in r.text.lower() or "no existe" in r.text)
 
 # --- PDF invalido (no es PDF de verdad) ---
 r = crear_ficha(oper, "1251054", pdf=("falso.pdf", b"esto no es un pdf en absoluto", "application/pdf"))
 check("archivo que dice .pdf pero no lo es, rechazado por firma binaria",
-      "no es un PDF valido" in r.text, r.text[:200] if "no es un PDF" not in r.text else "")
+      "no es un PDF válido" in r.text, r.text[:200] if "no es un PDF" not in r.text else "")
 
 # --- Extension incorrecta ---
 r = crear_ficha(oper, "1251054", pdf=("virus.exe", b"%PDF-1.4 igual", "application/pdf"))

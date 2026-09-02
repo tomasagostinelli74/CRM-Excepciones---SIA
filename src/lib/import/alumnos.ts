@@ -114,7 +114,7 @@ export async function parsearExcelAlumnos(buffer: Buffer): Promise<ResultadoPars
     await libro.xlsx.load(buffer as unknown as ArrayBuffer);
   } catch {
     throw new ErrorValidacion(
-      "No se pudo leer el archivo. Asegurate de que sea un Excel (.xlsx) valido y no este danado.",
+      "No se pudo leer el archivo. Asegurate de que sea un Excel (.xlsx) válido y no esté dañado.",
       "archivo",
     );
   }
@@ -150,7 +150,7 @@ export async function parsearExcelAlumnos(buffer: Buffer): Promise<ResultadoPars
         fila: numeroFila,
         legajo: legajoCrudo,
         valor: alumnoCrudo,
-        motivo: "El legajo tiene caracteres que no son numeros.",
+        motivo: "El legajo tiene caracteres que no son números.",
       });
       continue;
     }
@@ -192,7 +192,7 @@ export async function parsearExcelAlumnos(buffer: Buffer): Promise<ResultadoPars
 
   if (porLegajo.size === 0) {
     throw new ErrorValidacion(
-      "No se encontro ningun alumno valido en el archivo. Revisa que los datos empiecen en la fila 2.",
+      "No se encontró ningún alumno válido en el archivo. Revisa que los datos empiecen en la fila 2.",
       "archivo",
     );
   }

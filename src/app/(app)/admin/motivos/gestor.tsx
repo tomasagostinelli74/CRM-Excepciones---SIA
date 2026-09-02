@@ -144,7 +144,7 @@ export function GestorMotivos({ motivos }: { motivos: MotivoExcepcion[] }) {
     <div className="space-y-5">
       <PanelDesplegable
         titulo="Nuevo motivo"
-        resumen="Agregar un motivo de excepcion"
+        resumen="Agregar un motivo de excepción"
         abierto={creando}
         alCambiar={setCreando}
       >
@@ -154,7 +154,7 @@ export function GestorMotivos({ motivos }: { motivos: MotivoExcepcion[] }) {
       <Panel sinPadding>
         {motivos.length === 0 ? (
           <Vacio
-            titulo="Todavia no hay motivos cargados"
+            titulo="Todavía no hay motivos cargados"
             descripcion="El formulario de nueva ficha necesita al menos un motivo activo para funcionar."
           />
         ) : (
@@ -163,7 +163,7 @@ export function GestorMotivos({ motivos }: { motivos: MotivoExcepcion[] }) {
               <thead>
                 <tr>
                   <th scope="col">Orden</th>
-                  <th scope="col">Descripcion</th>
+                  <th scope="col">Descripción</th>
                   <th scope="col">Estado</th>
                   <th scope="col"><span className="sr-only">Acciones</span></th>
                 </tr>

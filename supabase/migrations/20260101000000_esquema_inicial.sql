@@ -175,7 +175,7 @@ begin
      and fe.id <> new.id;
 
   if ocupadas >= limite then
-    raise exception 'La fecha seleccionada ya cubrio su cupo de % alumno(s).', limite
+    raise exception 'La fecha seleccionada ya cubrió su cupo de % alumno(s).', limite
       using errcode = 'check_violation';
   end if;
 

@@ -13,15 +13,15 @@ export default async function PaginaUsuarios() {
     <>
       <EncabezadoPagina
         titulo="Usuarios"
-        descripcion="Quien puede entrar al sistema y con que permisos."
+        descripcion="Quién puede entrar al sistema y con qué permisos."
       />
 
       <div className="mb-5">
         <Aviso tipo="info" titulo="Sobre los roles">
           El <strong>operador</strong> carga, consulta, edita y anula fichas. El{" "}
-          <strong>administrador</strong> ademas configura motivos, fechas, el padron de alumnos y
-          los usuarios. Los usuarios desactivados pierden el acceso en su proximo click, sin
-          esperar a que venza la sesion.
+          <strong>administrador</strong> además configura motivos, fechas, el padrón de alumnos y
+          los usuarios. Los usuarios desactivados pierden el acceso en su próximo click, sin
+          esperar a que venza la sesión.
         </Aviso>
       </div>
 

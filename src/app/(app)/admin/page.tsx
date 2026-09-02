@@ -17,20 +17,20 @@ export default async function PaginaAdmin() {
     <>
       <EncabezadoPagina
         titulo="Tablero"
-        descripcion="Estado general del sistema de fichas de excepcion."
+        descripcion="Estado general del sistema de fichas de excepción."
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <Metrica
           etiqueta="Fichas vigentes"
           valor={resumen.fichasVigentes}
-          detalle={`${resumen.fichasUltimos7Dias} cargada(s) en los ultimos 7 dias`}
+          detalle={`${resumen.fichasUltimos7Dias} cargada(s) en los últimos 7 días`}
         />
         <Metrica etiqueta="Fichas anuladas" valor={resumen.fichasAnuladas} />
         <Metrica
-          etiqueta="Alumnos en el padron"
+          etiqueta="Alumnos en el padrón"
           valor={resumen.alumnos.toLocaleString("es-AR")}
-          detalle="Base de validacion de legajos"
+          detalle="Base de validación de legajos"
         />
         <Metrica etiqueta="Motivos activos" valor={resumen.motivosActivos} />
         <Metrica etiqueta="Fechas activas" valor={resumen.fechasActivas} />
@@ -38,8 +38,8 @@ export default async function PaginaAdmin() {
 
       <div className="mt-5 grid gap-5 lg:grid-cols-2">
         <Panel
-          titulo="Proximas fechas de recuperatorio"
-          descripcion="Ocupacion de las fechas habilitadas."
+          titulo="Próximas fechas de recuperatorio"
+          descripcion="Ocupación de las fechas habilitadas."
         >
           {fechas.length === 0 ? (
             <p className="text-sm" style={{ color: "var(--texto-suave)" }}>

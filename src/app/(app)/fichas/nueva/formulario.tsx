@@ -104,16 +104,16 @@ export function FormularioNuevaFicha({
       {estado.error ? <Aviso tipo="error">{estado.error}</Aviso> : null}
 
       {sinOpciones ? (
-        <Aviso tipo="error" titulo="Falta configuracion">
+        <Aviso tipo="error" titulo="Falta configuración">
           {motivos.length === 0
-            ? "No hay motivos de excepcion activos. "
+            ? "No hay motivos de excepción activos. "
             : "No hay fechas de recuperatorio activas. "}
           Un administrador tiene que cargarlos antes de poder generar fichas.
         </Aviso>
       ) : null}
 
       {/* --- Alumno --- */}
-      <Panel titulo="Alumno" descripcion="El legajo se valida contra el padron de inscriptos.">
+      <Panel titulo="Alumno" descripcion="El legajo se valida contra el padrón de inscriptos.">
         <div className="grid gap-4 sm:grid-cols-[minmax(0,14rem)_1fr]">
           <div>
             <label className="etiqueta" htmlFor="legajo">
@@ -190,11 +190,11 @@ export function FormularioNuevaFicha({
       </Panel>
 
       {/* --- Excepcion --- */}
-      <Panel titulo="Excepcion">
+      <Panel titulo="Excepción">
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label className="etiqueta" htmlFor="motivoId">
-              Motivo de excepcion
+              Motivo de excepción
             </label>
             <select
               id="motivoId"
@@ -264,7 +264,7 @@ export function FormularioNuevaFicha({
             className="campo"
             rows={3}
             maxLength={1000}
-            placeholder="Cualquier aclaracion util para el departamento."
+            placeholder="Cualquier aclaración útil para el departamento."
           />
         </div>
       </Panel>
@@ -294,7 +294,7 @@ export function FormularioNuevaFicha({
           Cancelar
         </Link>
         {legajoInvalido ? (
-          <p className="ayuda">Corregi el legajo para poder generar la ficha.</p>
+          <p className="ayuda">Corregí el legajo para poder generar la ficha.</p>
         ) : null}
       </div>
     </form>

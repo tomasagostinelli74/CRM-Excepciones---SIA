@@ -39,7 +39,7 @@ function secreto(): string {
 
   if (process.env.NODE_ENV === "production") {
     throw new Error(
-      "Falta SESSION_SECRET (minimo 32 caracteres). Generalo con: openssl rand -base64 32",
+      "Falta SESSION_SECRET (mínimo 32 caracteres). Generalo con: openssl rand -base64 32",
     );
   }
   // Solo desarrollo: efimero por proceso, se pierde al reiniciar.

@@ -50,7 +50,7 @@ export async function validarPdf(archivo: File): Promise<Buffer> {
   const cabecera = contenido.subarray(0, FIRMA_PDF.length);
   if (!cabecera.equals(Buffer.from(FIRMA_PDF))) {
     throw new ErrorValidacion(
-      "El archivo adjunto no es un PDF valido. Verifica que no este danado o renombrado.",
+      "El archivo adjunto no es un PDF válido. Verificá que no esté dañado o renombrado.",
       "archivo",
     );
   }

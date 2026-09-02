@@ -235,7 +235,7 @@ export class PostgresRepositorio implements Repositorio {
       return mapearMotivo(rows[0]!);
     } catch (error) {
       throw this.traducirError(error, {
-        idx_motivos_descripcion: { mensaje: "Ya existe un motivo con esa descripcion.", campo: "descripcion" },
+        idx_motivos_descripcion: { mensaje: "Ya existe un motivo con esa descripción.", campo: "descripcion" },
       });
     }
   }
@@ -250,7 +250,7 @@ export class PostgresRepositorio implements Repositorio {
       return mapearMotivo(rows[0]);
     } catch (error) {
       throw this.traducirError(error, {
-        idx_motivos_descripcion: { mensaje: "Ya existe un motivo con esa descripcion.", campo: "descripcion" },
+        idx_motivos_descripcion: { mensaje: "Ya existe un motivo con esa descripción.", campo: "descripcion" },
       });
     }
   }
@@ -476,7 +476,7 @@ export class PostgresRepositorio implements Repositorio {
         // de duplicados.
         throw this.traducirError(error, {
           idx_fichas_alumno_fecha_vigente: {
-            mensaje: "Justo se cargo otra ficha para ese legajo y esa fecha. Volve a intentar.",
+            mensaje: "Justo se cargó otra ficha para ese legajo y esa fecha. Volvé a intentar.",
             campo: "legajo",
           },
         });
@@ -534,7 +534,7 @@ export class PostgresRepositorio implements Repositorio {
       if (!rows[0]) throw new ErrorNoEncontrado("La ficha que intentas editar no existe.");
       const actual = mapearFicha(rows[0]);
       if (actual.estado === "anulada") {
-        throw new ErrorConflicto("La ficha esta anulada y ya no se puede editar.");
+        throw new ErrorConflicto("La ficha está anulada y ya no se puede editar.");
       }
 
       await this.validarReferenciasFicha(cliente, actual.legajo, cambios.motivoId, cambios.fechaRecuperatorioId);
@@ -581,7 +581,7 @@ export class PostgresRepositorio implements Repositorio {
       } catch (error) {
         throw this.traducirError(error, {
           idx_fichas_alumno_fecha_vigente: {
-            mensaje: "Justo se cargo otra ficha para ese legajo y esa fecha. Volve a intentar.",
+            mensaje: "Justo se cargó otra ficha para ese legajo y esa fecha. Volvé a intentar.",
             campo: "fechaRecuperatorioId",
           },
         });
@@ -799,7 +799,7 @@ export class PostgresRepositorio implements Repositorio {
   ): Promise<void> {
     const { rows: alumnoRows } = await ejecutor.query("select 1 from alumnos where legajo = $1", [legajo]);
     if (alumnoRows.length === 0) {
-      throw new ErrorValidacion("El legajo ingresado no existe en el padron de alumnos.", "legajo");
+      throw new ErrorValidacion("El legajo ingresado no existe en el padrón de alumnos.", "legajo");
     }
 
     const { rows: motivoRows } = await ejecutor.query<FilaMotivo>(
@@ -808,7 +808,7 @@ export class PostgresRepositorio implements Repositorio {
     );
     if (!motivoRows[0]) throw new ErrorValidacion("El motivo seleccionado no existe.", "motivoId");
     if (!motivoRows[0].activo) {
-      throw new ErrorValidacion("El motivo seleccionado ya no esta disponible.", "motivoId");
+      throw new ErrorValidacion("El motivo seleccionado ya no está disponible.", "motivoId");
     }
 
     const { rows: fechaRows } = await ejecutor.query<FilaFecha>(
@@ -819,7 +819,7 @@ export class PostgresRepositorio implements Repositorio {
       throw new ErrorValidacion("La fecha de recuperatorio seleccionada no existe.", "fechaRecuperatorioId");
     }
     if (!fechaRows[0].activo) {
-      throw new ErrorValidacion("La fecha de recuperatorio seleccionada ya no esta disponible.", "fechaRecuperatorioId");
+      throw new ErrorValidacion("La fecha de recuperatorio seleccionada ya no está disponible.", "fechaRecuperatorioId");
     }
   }
 
@@ -841,7 +841,7 @@ export class PostgresRepositorio implements Repositorio {
 
     if (ocupadas >= fecha.cupo) {
       throw new ErrorConflicto(
-        `La fecha seleccionada ya cubrio su cupo de ${fecha.cupo} alumno(s). Elegi otra fecha.`,
+        `La fecha seleccionada ya cubrió su cupo de ${fecha.cupo} alumno(s). Elegí otra fecha.`,
         "fechaRecuperatorioId",
       );
     }

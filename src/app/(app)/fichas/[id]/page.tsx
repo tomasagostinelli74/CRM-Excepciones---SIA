@@ -74,7 +74,7 @@ export default async function PaginaDetalleFicha({
         {anulada === "1" ? <Aviso tipo="ok">La ficha quedo anulada.</Aviso> : null}
 
         {!vigente ? (
-          <Aviso tipo="error" titulo="Esta ficha esta anulada">
+          <Aviso tipo="error" titulo="Esta ficha está anulada">
             <p>{ficha.motivoAnulacion}</p>
             <p className="mt-1 text-sm opacity-90">
               Anulada por {ficha.anuladaPorNombre ?? "un usuario eliminado"} el{" "}
@@ -92,7 +92,7 @@ export default async function PaginaDetalleFicha({
               <span className="font-mono tabular-nums">{ficha.legajo}</span>
             </Dato>
             <Dato etiqueta="Alumno">{ficha.alumnoNombreCompleto}</Dato>
-            <Dato etiqueta="Motivo de excepcion">{ficha.motivoDescripcion}</Dato>
+            <Dato etiqueta="Motivo de excepción">{ficha.motivoDescripcion}</Dato>
             <Dato etiqueta="Fecha de recuperatorio">
               {formatearFechaLarga(ficha.fechaRecuperatorio)}
             </Dato>
@@ -115,7 +115,7 @@ export default async function PaginaDetalleFicha({
               <span style={{ color: "var(--texto-tenue)" }}> ({ficha.creadoPorUsuario})</span>
             </Dato>
             <Dato etiqueta="Fecha de carga">{formatearInstante(ficha.creadoEn)}</Dato>
-            <Dato etiqueta="Ultima modificacion">{formatearInstante(ficha.actualizadoEn)}</Dato>
+            <Dato etiqueta="Última modificación">{formatearInstante(ficha.actualizadoEn)}</Dato>
           </dl>
 
           {ficha.observaciones ? (
@@ -140,7 +140,7 @@ export default async function PaginaDetalleFicha({
           </div>
         ) : null}
 
-        <Panel titulo="Historial" descripcion="Todo lo que paso con esta ficha, en orden inverso.">
+        <Panel titulo="Historial" descripcion="Todo lo que pasó con esta ficha, en orden inverso.">
           <ol className="space-y-3">
             {auditoria.map((evento) => (
               <li key={evento.id} className="flex gap-3 text-sm">

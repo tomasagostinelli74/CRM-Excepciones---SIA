@@ -41,7 +41,7 @@ export function ImportadorPadron({ totalActual }: { totalActual: number }) {
   return (
     <div className="space-y-5">
       <Panel
-        titulo="Cargar padron de alumnos"
+        titulo="Cargar padrón de alumnos"
         descripcion="Archivo .xlsx con las columnas «legajo» y «alumno» (formato «Apellido, Nombre»)."
       >
         <form
@@ -71,7 +71,7 @@ export function ImportadorPadron({ totalActual }: { totalActual: number }) {
           {confirmado.error ? <Aviso tipo="error">{confirmado.error}</Aviso> : null}
 
           {yaImporto && confirmado.resultado ? (
-            <Aviso tipo="ok" titulo="Padron actualizado">
+            <Aviso tipo="ok" titulo="Padrón actualizado">
               {confirmado.resultado.insertados} alumno(s) nuevo(s),{" "}
               {confirmado.resultado.actualizados} actualizado(s) y{" "}
               {confirmado.resultado.sinCambios} sin cambios.
@@ -102,17 +102,17 @@ export function ImportadorPadron({ totalActual }: { totalActual: number }) {
       </Panel>
 
       {previa && !yaImporto ? (
-        <Panel titulo="Vista previa" descripcion="Todavia no se escribio nada en la base.">
+        <Panel titulo="Vista previa" descripcion="Todavía no se escribió nada en la base.">
           <div className="grid gap-3 sm:grid-cols-3">
             <div className="rounded-lg p-3" style={{ background: "var(--superficie-2)" }}>
               <p className="text-xs font-semibold uppercase" style={{ color: "var(--texto-tenue)" }}>
-                Alumnos validos
+                Alumnos válidos
               </p>
               <p className="text-xl font-bold tabular-nums">{previa.validos.toLocaleString("es-AR")}</p>
             </div>
             <div className="rounded-lg p-3" style={{ background: "var(--superficie-2)" }}>
               <p className="text-xs font-semibold uppercase" style={{ color: "var(--texto-tenue)" }}>
-                Filas leidas
+                Filas leídas
               </p>
               <p className="text-xl font-bold tabular-nums">{previa.totalFilas.toLocaleString("es-AR")}</p>
             </div>
@@ -125,7 +125,7 @@ export function ImportadorPadron({ totalActual }: { totalActual: number }) {
           </div>
 
           <Aviso tipo="info">
-            El padron actual tiene {totalActual.toLocaleString("es-AR")} alumno(s). La importacion{" "}
+            El padrón actual tiene {totalActual.toLocaleString("es-AR")} alumno(s). La importación{" "}
             <strong>agrega los nuevos y actualiza los existentes</strong>; no borra a los que no
             figuren en el archivo.
           </Aviso>
@@ -157,7 +157,7 @@ export function ImportadorPadron({ totalActual }: { totalActual: number }) {
           {previa.duplicados.length > 0 ? (
             <div className="mt-4">
               <Aviso tipo="info" titulo="Legajos repetidos dentro del archivo">
-                Se toma la ultima aparicion de cada uno: {previa.duplicados.join(", ")}
+                Se toma la última aparición de cada uno: {previa.duplicados.join(", ")}
               </Aviso>
             </div>
           ) : null}

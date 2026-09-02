@@ -29,7 +29,7 @@ export function obtenerRepositorio(): Repositorio {
       cache.__crmRepo = new SupabaseRepositorio();
       break;
     default:
-      throw new Error(`DATA_ADAPTER desconocido: "${adaptador}". Valores validos: sqlite, supabase.`);
+      throw new Error(`DATA_ADAPTER desconocido: "${adaptador}". Valores válidos: sqlite, supabase.`);
   }
 
   return cache.__crmRepo;

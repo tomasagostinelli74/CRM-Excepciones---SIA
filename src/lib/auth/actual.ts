@@ -60,7 +60,7 @@ export async function requerirAdmin(destino?: string): Promise<Usuario> {
 export async function requerirUsuarioEnAccion(): Promise<Usuario> {
   const usuario = await usuarioActual();
   if (!usuario) {
-    throw new ErrorAutorizacion("Tu sesion expiro. Volve a iniciar sesion para continuar.");
+    throw new ErrorAutorizacion("Tu sesión expiró. Volvé a iniciar sesión para continuar.");
   }
   return usuario;
 }
@@ -68,7 +68,7 @@ export async function requerirUsuarioEnAccion(): Promise<Usuario> {
 export async function requerirRolEnAccion(rol: Rol): Promise<Usuario> {
   const usuario = await requerirUsuarioEnAccion();
   if (usuario.rol !== rol) {
-    throw new ErrorAutorizacion("No tenes permisos para realizar esta accion.");
+    throw new ErrorAutorizacion("No tenés permisos para realizar esta acción.");
   }
   return usuario;
 }

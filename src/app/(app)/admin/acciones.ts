@@ -163,7 +163,7 @@ export async function guardarUsuario(_previo: EstadoAdmin, datos: FormData): Pro
       // unico admin el sistema queda sin administrador.
       if (id === admin.id && (parseo.data.rol !== "admin" || !parseo.data.activo)) {
         throw new ErrorValidacion(
-          "No podes quitarte tu propio rol de administrador ni desactivar tu usuario.",
+          "No podés quitarte tu propio rol de administrador ni desactivar tu usuario.",
         );
       }
 
@@ -181,7 +181,7 @@ export async function guardarUsuario(_previo: EstadoAdmin, datos: FormData): Pro
 
       await repo.actualizarUsuario(id, { ...parseo.data, passwordHash });
       revalidatePath("/admin/usuarios");
-      return { ok: true, mensaje: passwordHash ? "Usuario y contrasena actualizados." : "Usuario actualizado." };
+      return { ok: true, mensaje: passwordHash ? "Usuario y contraseña actualizados." : "Usuario actualizado." };
     }
 
     // Al crear, la contrasena es obligatoria.
@@ -233,10 +233,10 @@ export async function previsualizarPadron(
 
     const archivo = datos.get("archivo");
     if (!(archivo instanceof File) || archivo.size === 0) {
-      throw new ErrorValidacion("Selecciona el archivo Excel del padron.", "archivo");
+      throw new ErrorValidacion("Selecciona el archivo Excel del padrón.", "archivo");
     }
     if (!/\.xlsx$/i.test(archivo.name)) {
-      throw new ErrorValidacion("El padron debe ser un archivo Excel (.xlsx).", "archivo");
+      throw new ErrorValidacion("El padrón debe ser un archivo Excel (.xlsx).", "archivo");
     }
 
     const parseo = await parsearExcelAlumnos(Buffer.from(await archivo.arrayBuffer()));
@@ -272,7 +272,7 @@ export async function importarPadron(
 
     const archivo = datos.get("archivo");
     if (!(archivo instanceof File) || archivo.size === 0) {
-      throw new ErrorValidacion("Selecciona el archivo Excel del padron.", "archivo");
+      throw new ErrorValidacion("Selecciona el archivo Excel del padrón.", "archivo");
     }
 
     const parseo = await parsearExcelAlumnos(Buffer.from(await archivo.arrayBuffer()));

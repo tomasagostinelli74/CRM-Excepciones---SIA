@@ -22,7 +22,7 @@ const COLUMNAS = [
   "Fecha de recuperatorio",
   "Observaciones",
   "Estado",
-  "Motivo de anulacion",
+  "Motivo de anulación",
   "Cargada por",
   "Fecha de carga",
   "Archivo adjunto",
@@ -45,7 +45,7 @@ function celda(valor: string | number | null): string {
 export async function GET(peticion: Request) {
   const usuario = await usuarioActual();
   if (!usuario) {
-    return NextResponse.json({ error: "Necesitas iniciar sesion." }, { status: 401 });
+    return NextResponse.json({ error: "Necesitas iniciar sesión." }, { status: 401 });
   }
 
   const url = new URL(peticion.url);

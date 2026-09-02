@@ -18,7 +18,7 @@ export async function GET(
 ) {
   const usuario = await usuarioActual();
   if (!usuario) {
-    return NextResponse.json({ error: "Necesitas iniciar sesion." }, { status: 401 });
+    return NextResponse.json({ error: "Necesitas iniciar sesión." }, { status: 401 });
   }
 
   const { id } = await params;

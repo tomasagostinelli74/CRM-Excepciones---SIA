@@ -29,24 +29,24 @@ const uuid = (campo: string) =>
 const fechaISO = z
   .string({ message: "Ingresa una fecha." })
   .trim()
-  .refine(esFechaISO, "La fecha no es valida. Usa el formato dd/mm/aaaa.");
+  .refine(esFechaISO, "La fecha no es válida. Usa el formato dd/mm/aaaa.");
 
 /** El legajo del padron es numerico; se guarda como texto. */
 export const esquemaLegajo = z
   .string({ message: "Ingresa el legajo." })
   .trim()
   .min(1, "Ingresa el legajo del alumno.")
-  .max(20, "El legajo no puede tener mas de 20 caracteres.")
-  .regex(/^\d+$/, "El legajo debe contener solo numeros.");
+  .max(20, "El legajo no puede tener más de 20 caracteres.")
+  .regex(/^\d+$/, "El legajo debe contener solo números.");
 
 export const esquemaLogin = z.object({
   usuario: textoRequerido("el usuario", 60),
-  password: z.string({ message: "Ingresa la contrasena." }).min(1, "Ingresa la contrasena."),
+  password: z.string({ message: "Ingresa la contraseña." }).min(1, "Ingresa la contraseña."),
 });
 
 export const esquemaNuevaFicha = z.object({
   legajo: esquemaLegajo,
-  motivoId: uuid("el motivo de excepcion"),
+  motivoId: uuid("el motivo de excepción"),
   fechaRecuperatorioId: uuid("la fecha de recuperatorio"),
   observaciones: z
     .string()
@@ -57,7 +57,7 @@ export const esquemaNuevaFicha = z.object({
 });
 
 export const esquemaEdicionFicha = z.object({
-  motivoId: uuid("el motivo de excepcion"),
+  motivoId: uuid("el motivo de excepción"),
   fechaRecuperatorioId: uuid("la fecha de recuperatorio"),
   observaciones: z
     .string()
@@ -68,18 +68,18 @@ export const esquemaEdicionFicha = z.object({
 });
 
 export const esquemaAnulacion = z.object({
-  motivo: textoRequerido("el motivo de la anulacion", 500).refine(
+  motivo: textoRequerido("el motivo de la anulación", 500).refine(
     (valor) => valor.length >= 10,
-    "Explica el motivo de la anulacion con al menos 10 caracteres.",
+    "Explica el motivo de la anulación con al menos 10 caracteres.",
   ),
 });
 
 export const esquemaMotivo = z.object({
-  descripcion: textoRequerido("la descripcion del motivo", 200),
+  descripcion: textoRequerido("la descripción del motivo", 200),
   activo: z.boolean(),
   orden: z.coerce
-    .number({ message: "El orden debe ser un numero." })
-    .int("El orden debe ser un numero entero.")
+    .number({ message: "El orden debe ser un número." })
+    .int("El orden debe ser un número entero.")
     .min(0, "El orden no puede ser negativo.")
     .max(9999, "El orden no puede superar 9999."),
 });
@@ -97,17 +97,17 @@ export const esquemaFecha = z.object({
 export const esquemaUsuario = z.object({
   usuario: textoRequerido("el nombre de usuario", 60).regex(
     /^[A-Za-z0-9._-]+$/,
-    "El usuario solo puede tener letras, numeros, punto, guion y guion bajo.",
+    "El usuario solo puede tener letras, números, punto, guion y guion bajo.",
   ),
   nombre: textoRequerido("el nombre y apellido", 120),
-  rol: z.enum(["admin", "operador"], { message: "Selecciona un rol valido." }),
+  rol: z.enum(["admin", "operador"], { message: "Selecciona un rol válido." }),
   activo: z.boolean(),
 });
 
 export const esquemaPassword = z
-  .string({ message: "Ingresa una contrasena." })
-  .min(8, "La contrasena debe tener al menos 8 caracteres.")
-  .max(200, "La contrasena no puede superar los 200 caracteres.");
+  .string({ message: "Ingresa una contraseña." })
+  .min(8, "La contraseña debe tener al menos 8 caracteres.")
+  .max(200, "La contraseña no puede superar los 200 caracteres.");
 
 export const esquemaFiltrosFichas = z.object({
   legajo: z.string().trim().max(20).optional(),
